@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return view('admin.blank-page');
 });
+
+Route::get('/item-info', function () {
+    return view('admin.inventory.item-info');
+});

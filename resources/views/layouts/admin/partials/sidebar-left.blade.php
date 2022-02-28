@@ -20,12 +20,25 @@
 				                            <i class="bx bx-home-alt" aria-hidden="true"></i>
 				                            <span>Parchase Item</span>
 				                        </a>                        
-				                    </li>
-														<li>
-				                        <a class="nav-link" href="layouts-default.html">
-				                            <i class="bx bx-home-alt" aria-hidden="true"></i>
+				                 
+									<li class="nav-parent">
+				                        <a class="nav-link" href="#">
+				                            <i class="bx bx-detail" aria-hidden="true"></i>
 				                            <span>Inventory Manage</span>
-				                        </a>                        
+				                        </a>
+				                        <ul class="nav nav-children">
+				                            <li>
+				                                <a class="nav-link" href="/item-info">
+				                                    Item Information
+				                                </a>
+				                            </li>
+				                            <li>
+				                                <a class="nav-link" href="forms-advanced.html">
+				                                    Advanced
+				                                </a>
+				                            </li>
+				                        
+				                        </ul>
 				                    </li>
 														<li>
 				                        <a class="nav-link" href="layouts-default.html">
