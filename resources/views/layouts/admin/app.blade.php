@@ -23,6 +23,9 @@
 		<link rel="stylesheet" href="{{ asset('assets/admin/vendor/boxicons/css/boxicons.min.css') }}" />
 		<link rel="stylesheet" href="{{ asset('assets/admin/vendor/magnific-popup/magnific-popup.css') }}" />
 		<link rel="stylesheet" href="{{ asset('assets/admin/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
+		<link rel="stylesheet" href="{{ asset('assets/admin/vendor/select2/css/select2.css') }}" />
+		<link rel="stylesheet" href="{{ asset('assets/admin/vendor/select2-bootstrap-theme/select2-bootstrap.min.css') }}" />
+		<link rel="stylesheet" href="{{ asset('assets/admin/vendor/datatables/media/css/dataTables.bootstrap5.css') }}" />
 
 		<!-- Theme CSS -->
 		<link rel="stylesheet" href="{{ asset('assets/admin/css/theme.css') }}" />
@@ -63,8 +66,9 @@
 		<script src="{{ asset('assets/admin/vendor/nanoscroller/nanoscroller.js') }}"></script>
 		<script src="{{ asset('assets/admin/vendor/magnific-popup/jquery.magnific-popup.js') }}"></script>
 		<script src="{{ asset('assets/admin/vendor/jquery-placeholder/jquery.placeholder.js') }}"></script>
-
 		<!-- Specific Page Vendor -->
+		@stack('specificpagevendor')
+
 
 		<!-- Theme Base, Components and Settings -->
 		<script src="{{ asset('assets/admin/js/theme.js') }}"></script>
