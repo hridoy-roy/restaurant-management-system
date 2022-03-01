@@ -4,252 +4,261 @@ Written by: 	Okler Themes - (http://www.okler.net)
 Theme Version: 	4.0.0
 */
 
-(function($) {
+(function ($) {
+    "use strict";
 
-	'use strict';
+    var EditableTable = {
+        options: {
+            addButton: "#addToTable",
+            table: "#datatable-editable",
+            dialog: {
+                wrapper: "#dialog",
+                cancelButton: "#dialogCancel",
+                confirmButton: "#dialogConfirm",
+            },
+        },
 
-	var EditableTable = {
+        initialize: function () {
+            this.setVars().build().events();
+        },
 
-		options: {
-			addButton: '#addToTable',
-			table: '#datatable-editable',
-			dialog: {
-				wrapper: '#dialog',
-				cancelButton: '#dialogCancel',
-				confirmButton: '#dialogConfirm',
-			}
-		},
+        setVars: function () {
+            this.$table = $(this.options.table);
+            this.$addButton = $(this.options.addButton);
 
-		initialize: function() {
-			this
-				.setVars()
-				.build()
-				.events();
-		},
+            // dialog
+            this.dialog = {};
+            this.dialog.$wrapper = $(this.options.dialog.wrapper);
+            this.dialog.$cancel = $(this.options.dialog.cancelButton);
+            this.dialog.$confirm = $(this.options.dialog.confirmButton);
 
-		setVars: function() {
-			this.$table				= $( this.options.table );
-			this.$addButton			= $( this.options.addButton );
+            return this;
+        },
 
-			// dialog
-			this.dialog				= {};
-			this.dialog.$wrapper	= $( this.options.dialog.wrapper );
-			this.dialog.$cancel		= $( this.options.dialog.cancelButton );
-			this.dialog.$confirm	= $( this.options.dialog.confirmButton );
+        build: function () {
+            this.datatable = this.$table.DataTable({
+                dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',
+                aoColumns: [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { bSortable: false },
+                ],
+            });
 
-			return this;
-		},
+            window.dt = this.datatable;
 
-		build: function() {
-			this.datatable = this.$table.DataTable({
-				dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',
-				aoColumns: [
-					null,
-					null,
-					null,
-					{ "bSortable": false }
-				]
-			});
+            return this;
+        },
 
-			window.dt = this.datatable;
+        events: function () {
+            var _self = this;
 
-			return this;
-		},
+            this.$table
+                .on("click", "a.save-row", function (e) {
+                    e.preventDefault();
 
-		events: function() {
-			var _self = this;
+                    _self.rowSave($(this).closest("tr"));
+                })
+                .on("click", "a.cancel-row", function (e) {
+                    e.preventDefault();
 
-			this.$table
-				.on('click', 'a.save-row', function( e ) {
-					e.preventDefault();
+                    _self.rowCancel($(this).closest("tr"));
+                })
+                .on("click", "a.edit-row", function (e) {
+                    e.preventDefault();
 
-					_self.rowSave( $(this).closest( 'tr' ) );
-				})
-				.on('click', 'a.cancel-row', function( e ) {
-					e.preventDefault();
+                    _self.rowEdit($(this).closest("tr"));
+                })
+                .on("click", "a.remove-row", function (e) {
+                    e.preventDefault();
 
-					_self.rowCancel( $(this).closest( 'tr' ) );
-				})
-				.on('click', 'a.edit-row', function( e ) {
-					e.preventDefault();
+                    var $row = $(this).closest("tr"),
+                        itemId = $row.attr("data-item-id");
 
-					_self.rowEdit( $(this).closest( 'tr' ) );
-				})
-				.on( 'click', 'a.remove-row', function( e ) {
-					e.preventDefault();
+                    $.magnificPopup.open({
+                        items: {
+                            src: _self.options.dialog.wrapper,
+                            type: "inline",
+                        },
+                        preloader: false,
+                        modal: true,
+                        callbacks: {
+                            change: function () {
+                                _self.dialog.$confirm.on("click", function (e) {
+                                    e.preventDefault();
 
-					var $row = $(this).closest( 'tr' ),
-						itemId = $row.attr('data-item-id');
+                                    $.ajax({
+                                        url: "/",
+                                        method: "GET",
+                                        data: {
+                                            id: itemId,
+                                        },
+                                        success: function () {
+                                            _self.rowRemove($row);
+                                        },
+                                    });
 
-					$.magnificPopup.open({
-						items: {
-							src: _self.options.dialog.wrapper,
-							type: 'inline'
-						},
-						preloader: false,
-						modal: true,
-						callbacks: {
-							change: function() {
-								_self.dialog.$confirm.on( 'click', function( e ) {
-									e.preventDefault();
+                                    $.magnificPopup.close();
+                                });
+                            },
+                            close: function () {
+                                _self.dialog.$confirm.off("click");
+                            },
+                        },
+                    });
+                });
 
-							        $.ajax({
-							            url: '/',
-							            method: 'GET',
-							            data: {
-							                id: itemId
-							            },
-							            success: function() {
-            								_self.rowRemove( $row );
-							            }
-							        });
+            this.$addButton.on("click", function (e) {
+                e.preventDefault();
 
-									$.magnificPopup.close();
-								});
-							},
-							close: function() {
-								_self.dialog.$confirm.off( 'click' );
-							}
-						}
-					});
-				});
+                _self.rowAdd();
+            });
 
-			this.$addButton.on( 'click', function(e) {
-				e.preventDefault();
+            this.dialog.$cancel.on("click", function (e) {
+                e.preventDefault();
+                $.magnificPopup.close();
+            });
 
-				_self.rowAdd();
-			});
+            return this;
+        },
 
-			this.dialog.$cancel.on( 'click', function( e ) {
-				e.preventDefault();
-				$.magnificPopup.close();
-			});
+        // ==========================================================================================
+        // ROW FUNCTIONS
+        // ==========================================================================================
+        rowAdd: function () {
+            this.$addButton.attr({ disabled: "disabled" });
 
-			return this;
-		},
+            var actions, data, $row;
 
-		// ==========================================================================================
-		// ROW FUNCTIONS
-		// ==========================================================================================
-		rowAdd: function() {
-			this.$addButton.attr({ 'disabled': 'disabled' });
+            actions = [
+                '<a href="#" class="hidden on-editing save-row"><i class="fas fa-save"></i></a>',
+                '<a href="#" class="hidden on-editing cancel-row"><i class="fas fa-times"></i></a>',
+                '<a href="#" class="on-default edit-row"><i class="fas fa-pencil-alt"></i></a>',
+                '<a href="#" class="on-default remove-row"><i class="far fa-trash-alt"></i></a>',
+            ].join(" ");
 
-			var actions,
-				data,
-				$row;
+            data = this.datatable.row.add([
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                actions,
+            ]);
+            $row = this.datatable.row(data[0]).nodes().to$();
 
-			actions = [
-				'<a href="#" class="hidden on-editing save-row"><i class="fas fa-save"></i></a>',
-				'<a href="#" class="hidden on-editing cancel-row"><i class="fas fa-times"></i></a>',
-				'<a href="#" class="on-default edit-row"><i class="fas fa-pencil-alt"></i></a>',
-				'<a href="#" class="on-default remove-row"><i class="far fa-trash-alt"></i></a>'
-			].join(' ');
+            $row.addClass("adding").find("td:last").addClass("actions");
 
-			data = this.datatable.row.add([ '', '', '', actions ]);
-			$row = this.datatable.row( data[0] ).nodes().to$();
+            this.rowEdit($row);
 
-			$row
-				.addClass( 'adding' )
-				.find( 'td:last' )
-				.addClass( 'actions' );
+            this.datatable.order([0, "asc"]).draw(); // always show fields
+        },
 
-			this.rowEdit( $row );
+        rowCancel: function ($row) {
+            var _self = this,
+                $actions,
+                i,
+                data;
 
-			this.datatable.order([0,'asc']).draw(); // always show fields
-		},
+            if ($row.hasClass("adding")) {
+                this.rowRemove($row);
+            } else {
+                data = this.datatable.row($row.get(0)).data();
+                this.datatable.row($row.get(0)).data(data);
 
-		rowCancel: function( $row ) {
-			var _self = this,
-				$actions,
-				i,
-				data;
+                $actions = $row.find("td.actions");
+                if ($actions.get(0)) {
+                    this.rowSetActionsDefault($row);
+                }
 
-			if ( $row.hasClass('adding') ) {
-				this.rowRemove( $row );
-			} else {
+                this.datatable.draw();
+            }
+        },
 
-				data = this.datatable.row( $row.get(0) ).data();
-				this.datatable.row( $row.get(0) ).data( data );
+        rowEdit: function ($row) {
+            var _self = this,
+                data;
+            console.log("ok");
+            data = this.datatable.row($row.get(0)).data();
 
-				$actions = $row.find('td.actions');
-				if ( $actions.get(0) ) {
-					this.rowSetActionsDefault( $row );
-				}
+            var inputs = [
+                '<input class="form-control input-block" type="text" id="id" name="id" />',
+                '<input class="form-control input-block" type="text" id=itemName" name="itemName" />',
+                '<input class="form-control input-block" type="text" id="itemGroup" name="itemGroup" />',
+                '<input class="form-control input-block" type="text" id="unit" name="unit" />',
+                '<input class="form-control input-block" type="text" id="sPrice" name="sPrice" />',
+                '<input class="form-control input-block" type="text" id="cPrice" name="cPrice" />',
+                '<input  type="radio" id="status" name="status" value="active" checked/><label for="active">Active</label><br><input type="radio" id="status" name="status" value="inactive" /><label for="inactive">Inactive</label>',
+            ];
+            $row.children("td").each(function (i) {
+                var $this = $(this);
 
-				this.datatable.draw();
-			}
-		},
+                if ($this.hasClass("actions")) {
+                    _self.rowSetActionsEditing($row);
+                } else {
+                    $this.html(inputs[i]);
+                }
+            });
+        },
 
-		rowEdit: function( $row ) {
-			var _self = this,
-				data;
+        rowSave: function ($row) {
+            var _self = this,
+                $actions,
+                values = [];
 
-			data = this.datatable.row( $row.get(0) ).data();
+            if ($row.hasClass("adding")) {
+                this.$addButton.removeAttr("disabled");
+                $row.removeClass("adding");
+            }
 
-			$row.children( 'td' ).each(function( i ) {
-				var $this = $( this );
+            values = $row.find("td").map(function () {
+                var $this = $(this);
 
-				if ( $this.hasClass('actions') ) {
-					_self.rowSetActionsEditing( $row );
-				} else {
-					$this.html( '<input type="text" class="form-control input-block" value="' + data[i] + '"/>' );
-				}
-			});
-		},
+                if ($this.hasClass("actions")) {
+                    _self.rowSetActionsDefault($row);
+                    return _self.datatable.cell(this).data();
+                } else {
+                    return $.trim($this.find("input").val());
+                }
+            });
 
-		rowSave: function( $row ) {
-			var _self     = this,
-				$actions,
-				values    = [];
+            this.datatable.row($row.get(0)).data(values);
 
-			if ( $row.hasClass( 'adding' ) ) {
-				this.$addButton.removeAttr( 'disabled' );
-				$row.removeClass( 'adding' );
-			}
+            $actions = $row.find("td.actions");
+            if ($actions.get(0)) {
+                this.rowSetActionsDefault($row);
+            }
 
-			values = $row.find('td').map(function() {
-				var $this = $(this);
+            this.datatable.draw();
+        },
 
-				if ( $this.hasClass('actions') ) {
-					_self.rowSetActionsDefault( $row );
-					return _self.datatable.cell( this ).data();
-				} else {
-					return $.trim( $this.find('input').val() );
-				}
-			});
+        rowRemove: function ($row) {
+            if ($row.hasClass("adding")) {
+                this.$addButton.removeAttr("disabled");
+            }
 
-			this.datatable.row( $row.get(0) ).data( values );
+            this.datatable.row($row.get(0)).remove().draw();
+        },
 
-			$actions = $row.find('td.actions');
-			if ( $actions.get(0) ) {
-				this.rowSetActionsDefault( $row );
-			}
+        rowSetActionsEditing: function ($row) {
+            $row.find(".on-editing").removeClass("hidden");
+            $row.find(".on-default").addClass("hidden");
+        },
 
-			this.datatable.draw();
-		},
+        rowSetActionsDefault: function ($row) {
+            $row.find(".on-editing").addClass("hidden");
+            $row.find(".on-default").removeClass("hidden");
+        },
+    };
 
-		rowRemove: function( $row ) {
-			if ( $row.hasClass('adding') ) {
-				this.$addButton.removeAttr( 'disabled' );
-			}
-
-			this.datatable.row( $row.get(0) ).remove().draw();
-		},
-
-		rowSetActionsEditing: function( $row ) {
-			$row.find( '.on-editing' ).removeClass( 'hidden' );
-			$row.find( '.on-default' ).addClass( 'hidden' );
-		},
-
-		rowSetActionsDefault: function( $row ) {
-			$row.find( '.on-editing' ).addClass( 'hidden' );
-			$row.find( '.on-default' ).removeClass( 'hidden' );
-		}
-
-	};
-
-	$(function() {
-		EditableTable.initialize();
-	});
-
-}).apply(this, [jQuery]);
+    $(function () {
+        EditableTable.initialize();
+    });
+}.apply(this, [jQuery]));
