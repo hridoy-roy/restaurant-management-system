@@ -4,6 +4,7 @@
 
 		<!-- Basic -->
 		<meta charset="UTF-8">
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 
 		<title>Blank Page | Porto Admin - Responsive HTML5 Template</title>
 		<meta name="keywords" content="HTML5 Admin Template" />

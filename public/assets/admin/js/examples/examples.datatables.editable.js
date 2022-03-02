@@ -188,7 +188,7 @@ Theme Version: 	4.0.0
 
             var inputs = [
                 '<input class="form-control input-block" type="text" id="id" disabled name="id" />',
-                '<input class="form-control input-block" type="text" id=iName" name="itemName" />',
+                '<input class="form-control input-block" type="text" id="iName" name="iName" />',
                 '<input class="form-control input-block" type="text" id="itemGroup" name="itemGroup" />',
                 '<input class="form-control input-block" type="text" id="unit" name="unit" />',
                 '<input class="form-control input-block" type="text" id="sPrice" name="sPrice" />',
@@ -263,7 +263,11 @@ Theme Version: 	4.0.0
 // Ajax Custom Code 
 
 // Insert 
-
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 function insertItem(){
     
      let iName = document.getElementById("iName").value;
@@ -271,21 +275,24 @@ function insertItem(){
      var unit = document.getElementById("unit").value;
      var sPrice = document.getElementById("sPrice").value;
      var cPrice = document.getElementById("cPrice").value;
-    console.log(iName);
+     console.log(iName);
     console.log(itemGroup);
     console.log(unit);
     console.log(sPrice);
     console.log(cPrice);
 
-    // $.ajax({
-    //     url: "/add/item",
-    //     method: "post",
-    //     cache: false,
-    //     data: {
-    //         itemName:itemName,itemGroup:itemGroup,unit:unit,sPrice:sPrice,cPrice:cPrice
-    //     },
-    //     success: function () {
-    //         alert("ok");
-    //     }
-    // });
+    $.ajax({
+        url: "/add/item",
+        method: "post",
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            iName:iName,itemGroup:itemGroup,unit:unit,sPrice:sPrice,cPrice:cPrice
+        },
+        success: function () {
+            alert("ok");
+        }
+    });
 }

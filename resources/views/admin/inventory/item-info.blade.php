@@ -55,7 +55,7 @@
 											<th>Unit</th>
 											<th>S Price</th>
 											<th>P Price</th>
-                      <th>Status</th>
+                     						 <th>Status</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
@@ -65,9 +65,9 @@
 											<td>Internet</td>
 											<td>Win 95+</td>
 											<td>Win 95+</td>
-                      <td>Win 95+</td>
-                      <td>Win 95+</td>
-                      <td>Win 95+</td>
+											<td>Win 95+</td>
+											<td>Win 95+</td>
+											<td>Win 95+</td>
                                             
 											<td class="actions">
 												<a href="#" class="hidden on-editing save-row"><i class="fas fa-save"></i></a>
