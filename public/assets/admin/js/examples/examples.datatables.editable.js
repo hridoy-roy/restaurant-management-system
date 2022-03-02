@@ -136,7 +136,7 @@ Theme Version: 	4.0.0
             var actions, data, $row;
 
             actions = [
-                '<a href="#" class="hidden on-editing save-row"><i class="fas fa-save"></i></a>',
+                '<a href="#" class="hidden on-editing save-row" onclick="insertItem()"><i class="fas fa-save"></i></a>',
                 '<a href="#" class="hidden on-editing cancel-row"><i class="fas fa-times"></i></a>',
                 '<a href="#" class="on-default edit-row"><i class="fas fa-pencil-alt"></i></a>',
                 '<a href="#" class="on-default remove-row"><i class="far fa-trash-alt"></i></a>',
@@ -184,18 +184,16 @@ Theme Version: 	4.0.0
 
         rowEdit: function ($row) {
             var _self = this,
-                data;
-            console.log("ok");
             data = this.datatable.row($row.get(0)).data();
 
             var inputs = [
-                '<input class="form-control input-block" type="text" id="id" name="id" />',
-                '<input class="form-control input-block" type="text" id=itemName" name="itemName" />',
+                '<input class="form-control input-block" type="text" id="id" disabled name="id" />',
+                '<input class="form-control input-block" type="text" id=iName" name="itemName" />',
                 '<input class="form-control input-block" type="text" id="itemGroup" name="itemGroup" />',
                 '<input class="form-control input-block" type="text" id="unit" name="unit" />',
                 '<input class="form-control input-block" type="text" id="sPrice" name="sPrice" />',
                 '<input class="form-control input-block" type="text" id="cPrice" name="cPrice" />',
-                '<input  type="radio" id="status" name="status" value="active" checked/><label for="active">Active</label><br><input type="radio" id="status" name="status" value="inactive" /><label for="inactive">Inactive</label>',
+                '<input  type="radio" id="status" name="status" value="active" checked/><label for="active"> Active</label><br><input type="radio" id="status" name="status" value="inactive" /><label for="inactive"> Inactive</label>',
             ];
             $row.children("td").each(function (i) {
                 var $this = $(this);
@@ -262,3 +260,32 @@ Theme Version: 	4.0.0
         EditableTable.initialize();
     });
 }.apply(this, [jQuery]));
+// Ajax Custom Code 
+
+// Insert 
+
+function insertItem(){
+    
+     let iName = document.getElementById("iName").value;
+     var itemGroup = document.getElementById("itemGroup").value;
+     var unit = document.getElementById("unit").value;
+     var sPrice = document.getElementById("sPrice").value;
+     var cPrice = document.getElementById("cPrice").value;
+    console.log(iName);
+    console.log(itemGroup);
+    console.log(unit);
+    console.log(sPrice);
+    console.log(cPrice);
+
+    // $.ajax({
+    //     url: "/add/item",
+    //     method: "post",
+    //     cache: false,
+    //     data: {
+    //         itemName:itemName,itemGroup:itemGroup,unit:unit,sPrice:sPrice,cPrice:cPrice
+    //     },
+    //     success: function () {
+    //         alert("ok");
+    //     }
+    // });
+}

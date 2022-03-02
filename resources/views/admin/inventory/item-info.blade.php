@@ -20,7 +20,7 @@
 								<li><span>Tables</span></li>
 
 								<li><span>Editable</span></li>
-
+								
 							</ol>
 
 							<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
@@ -36,6 +36,7 @@
 								</div>
 
 								<h2 class="card-title">Default</h2>
+								<div class="switch switch-sm switch-info"><input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" /></div>
 							</header>
 							<div class="card-body">
 								<div class="row">
@@ -54,7 +55,7 @@
 											<th>Unit</th>
 											<th>S Price</th>
 											<th>P Price</th>
-                                            <th>Status</th>
+                      <th>Status</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
@@ -64,9 +65,9 @@
 											<td>Internet</td>
 											<td>Win 95+</td>
 											<td>Win 95+</td>
-                                            <td>Win 95+</td>
-                                            <td>Win 95+</td>
-                                            <td>Win 95+</td>
+                      <td>Win 95+</td>
+                      <td>Win 95+</td>
+                      <td>Win 95+</td>
                                             
 											<td class="actions">
 												<a href="#" class="hidden on-editing save-row"><i class="fas fa-save"></i></a>
@@ -87,6 +88,7 @@
     <script src="{{ asset('assets/admin/vendor/select2/js/select2.js') }}"></script>
 		<script src="{{ asset('assets/admin/vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
 		<script src="{{ asset('assets/admin/vendor/datatables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+		<script src="{{ asset('assets/admin/vendor/ios7-switch/ios7-switch.js') }}"></script> 
 @endpush
 @push('script')
 

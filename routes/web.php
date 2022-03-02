@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ItemsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,5 @@ Route::get('/admin', function () {
 Route::get('/item-info', function () {
     return view('admin.inventory.item-info');
 });
+
+Route::post('/add/item', [ItemsController::class, 'insert']);
