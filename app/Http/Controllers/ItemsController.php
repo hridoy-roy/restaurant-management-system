@@ -27,16 +27,16 @@ class ItemsController extends Controller
 
         $items = Item::all();
 
-         return view('admin.inventory.item-info', compact('items'));
+        return view('admin.inventory.item-info', compact('items'));
     }
 
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $items= Item::find($id);
+
+        $items = Item::find($request->id);
 
         $items->delete();
 
-        return redirect()->back();
-
+        return response()->json();
     }
 }

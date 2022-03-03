@@ -306,9 +306,7 @@ function itemDelete(id){
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            data: {
-                deleteId:id
-            },
+            data: {id:id},
             success: function () {
                 alert("Deleted");
             }

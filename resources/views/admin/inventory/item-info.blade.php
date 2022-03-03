@@ -7,7 +7,7 @@
 @section('main_content')
 				<section role="main" class="content-body">
 					<header class="page-header">
-						<h2>Editable Tables</h2>
+						<h2>Item Management</h2>
 
 						<div class="right-wrapper text-end">
 							<ol class="breadcrumbs">
@@ -17,9 +17,9 @@
 									</a>
 								</li>
 
-								<li><span>Tables</span></li>
+								<li><span>Inventory</span></li>
 
-								<li><span>Editable</span></li>
+								<li><span>Item Management</span></li>
 								
 							</ol>
 
@@ -35,8 +35,8 @@
 									{{-- <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a> --}}
 								</div>
 
-								<h2 class="card-title">Default</h2>
-								<div class="switch switch-sm switch-info"><input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" /></div>
+								<h2 class="card-title">Item Information</h2>
+								
 							</header>
 							<div class="card-body">
 								<div class="row">
