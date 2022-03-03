@@ -206,36 +206,36 @@ Theme Version: 	4.0.0
             });
         },
 
-        rowSave: function ($row) {
-            var _self = this,
-                $actions,
-                values = [];
+        // rowSave: function ($row) {
+        //     var _self = this,
+        //         $actions,
+        //         values = [];
 
-            if ($row.hasClass("adding")) {
-                this.$addButton.removeAttr("disabled");
-                $row.removeClass("adding");
-            }
+        //     if ($row.hasClass("adding")) {
+        //         this.$addButton.removeAttr("disabled");
+        //         $row.removeClass("adding");
+        //     }
 
-            values = $row.find("td").map(function () {
-                var $this = $(this);
+        //     values = $row.find("td").map(function () {
+        //         var $this = $(this);
 
-                if ($this.hasClass("actions")) {
-                    _self.rowSetActionsDefault($row);
-                    return _self.datatable.cell(this).data();
-                } else {
-                    return $.trim($this.find("input").val());
-                }
-            });
+        //         if ($this.hasClass("actions")) {
+        //             _self.rowSetActionsDefault($row);
+        //             return _self.datatable.cell(this).data();
+        //         } else {
+        //             return $.trim($this.find("input").val());
+        //         }
+        //     });
 
-            this.datatable.row($row.get(0)).data(values);
+        //     this.datatable.row($row.get(0)).data(values);
 
-            $actions = $row.find("td.actions");
-            if ($actions.get(0)) {
-                this.rowSetActionsDefault($row);
-            }
+        //     $actions = $row.find("td.actions");
+        //     if ($actions.get(0)) {
+        //         this.rowSetActionsDefault($row);
+        //     }
 
-            this.datatable.draw();
-        },
+        //     this.datatable.draw();
+        // },
 
         rowRemove: function ($row) {
             if ($row.hasClass("adding")) {
@@ -260,7 +260,9 @@ Theme Version: 	4.0.0
         EditableTable.initialize();
     });
 }.apply(this, [jQuery]));
-// Ajax Custom Code 
+
+
+//***********************/ Ajax Custom Code /***********************//
 
 // Insert 
 $.ajaxSetup({

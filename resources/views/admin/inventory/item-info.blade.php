@@ -73,7 +73,7 @@
 											
                                             
 											<td class="actions">
-												<a href="#" class="hidden on-editing save-row"><i class="fas fa-save"></i></a>
+												<a href="#" class="hidden on-editing save-row" ><i class="fas fa-save"></i></a>
 												<a href="#" class="hidden on-editing cancel-row"><i class="fas fa-times"></i></a>
 												<a href="#" class="on-default edit-row"><i class="fas fa-pencil-alt"></i></a>
 												<a href="#" class="on-default" onclick="itemDelete({{ $data->id }})"><i class="far fa-trash-alt"></i></a>
