@@ -189,11 +189,11 @@ Theme Version: 	4.0.0
             var inputs = [
                 '<input class="form-control input-block" type="text" id="id" disabled name="id" />',
                 '<input class="form-control input-block" type="text" id="iName" name="iName" />',
-                '<input class="form-control input-block" type="text" id="itemGroup" name="itemGroup" />',
+                '<select class="form-control input-block" type="text" id="itemGroup" name="itemGroup"><option> </option><option value="1">Saleable</option><option value="2">Purchasable</option></select>',
                 '<input class="form-control input-block" type="text" id="unit" name="unit" />',
                 '<input class="form-control input-block" type="text" id="sPrice" name="sPrice" />',
                 '<input class="form-control input-block" type="text" id="cPrice" name="cPrice" />',
-                '<input  type="radio" id="status" name="status" value="active" checked/><label for="active"> Active</label><br><input type="radio" id="status" name="status" value="inactive" /><label for="inactive"> Inactive</label>',
+                '<select class="form-control input-block" type="text"  id="status" name="status"><option></option><option>Active</option><option>Inactive</option></select>',
             ];
             $row.children("td").each(function (i) {
                 var $this = $(this);
@@ -275,9 +275,8 @@ function insertItem(){
      var unit = document.getElementById("unit").value;
      var sPrice = document.getElementById("sPrice").value;
      var cPrice = document.getElementById("cPrice").value;
-     console.log(iName);
-    console.log(itemGroup);
-    console.log(unit);
+     var status = document.getElementById("status").value;
+    
     console.log(sPrice);
     console.log(cPrice);
 
@@ -289,10 +288,29 @@ function insertItem(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         data: {
-            iName:iName,itemGroup:itemGroup,unit:unit,sPrice:sPrice,cPrice:cPrice
+            iName:iName, itemGroup:itemGroup, unit:unit, sPrice:sPrice, cPrice:cPrice, status:status
         },
         success: function () {
             alert("ok");
         }
     });
+}
+
+function itemDelete(id){
+
+    var id= id;
+        $.ajax({
+            url: "/delete/item",
+            method: "post",
+            cache: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                deleteId:id
+            },
+            success: function () {
+                alert("Deleted");
+            }
+        });
 }

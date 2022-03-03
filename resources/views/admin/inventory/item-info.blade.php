@@ -60,23 +60,26 @@
 										</tr>
 									</thead>
 									<tbody>
+										@foreach ($items as $data)
+																					
 										<tr data-item-id="1">
-											<td>Trident</td>
-											<td>Internet</td>
-											<td>Win 95+</td>
-											<td>Win 95+</td>
-											<td>Win 95+</td>
-											<td>Win 95+</td>
-											<td>Win 95+</td>
+											<td>{{ $data->id }}</td>
+											<td>{{ $data->item_name }}</td>
+											<td>{{ $data->group_id }}</td>
+											<td>{{ $data->unit_name }}</td>
+											<td>{{ $data->sale_price }}</td>
+											<td>{{ $data->purchase_price }}</td>
+											<td>{{ $data->status }}</td>
+											
                                             
 											<td class="actions">
 												<a href="#" class="hidden on-editing save-row"><i class="fas fa-save"></i></a>
 												<a href="#" class="hidden on-editing cancel-row"><i class="fas fa-times"></i></a>
 												<a href="#" class="on-default edit-row"><i class="fas fa-pencil-alt"></i></a>
-												<a href="#" class="on-default remove-row"><i class="far fa-trash-alt"></i></a>
+												<a href="#" class="on-default" onclick="itemDelete({{ $data->id }})"><i class="far fa-trash-alt"></i></a>
 											</td>
 										</tr>
-			
+										@endforeach
 									</tbody>
 								</table>
 							</div>
@@ -89,6 +92,7 @@
 		<script src="{{ asset('assets/admin/vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
 		<script src="{{ asset('assets/admin/vendor/datatables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 		<script src="{{ asset('assets/admin/vendor/ios7-switch/ios7-switch.js') }}"></script> 
+		
 @endpush
 @push('script')
 

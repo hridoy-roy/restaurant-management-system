@@ -22,8 +22,12 @@ Route::get('/admin', function () {
     return view('admin.blank-page');
 });
 
-Route::get('/item-info', function () {
-    return view('admin.inventory.item-info');
-});
+// Route::get('/item-info', function () {
+//     return view('admin.inventory.item-info');
+// });
 
 Route::post('/add/item', [ItemsController::class, 'insert']);
+
+Route::get('/item-info', [ItemsController::class,'show']);
+
+Route::post('/delete/item', [ItemsController::class, 'delete']);
