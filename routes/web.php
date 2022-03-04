@@ -27,7 +27,9 @@ Route::get('/admin', function () {
 // });
 
 Route::post('/add/item', [ItemsController::class, 'insert']);
+Route::post('/update/item', [ItemsController::class, 'update']);
 
-Route::get('/item-info', [ItemsController::class,'show']);
+Route::get('/show/item', [ItemsController::class,'show']);
+Route::get('/view/data', [ItemsController::class,'index']);
 
 Route::post('/delete/item', [ItemsController::class, 'delete']);

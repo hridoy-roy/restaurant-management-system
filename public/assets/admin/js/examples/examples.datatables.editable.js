@@ -61,8 +61,8 @@ Theme Version: 	4.0.0
             this.$table
                 // .on("click", "a.save-row", function (e) {
                 //     e.preventDefault();
-
-                //     _self.rowSave($(this).closest("tr"));
+                    
+                //      _self.rowSave($(this).closest("tr"));
                 // })
                 .on("click", "a.cancel-row", function (e) {
                     e.preventDefault();
@@ -71,7 +71,7 @@ Theme Version: 	4.0.0
                 })
                 .on("click", "a.edit-row", function (e) {
                     e.preventDefault();
-
+                    
                     _self.rowEdit($(this).closest("tr"));
                 })
                 .on("click", "a.remove-row", function (e) {
@@ -138,7 +138,7 @@ Theme Version: 	4.0.0
             actions = [
                 '<a href="#" class="hidden on-editing save-row" onclick="insertItem()"><i class="fas fa-save"></i></a>',
                 '<a href="#" class="hidden on-editing cancel-row"><i class="fas fa-times"></i></a>',
-                '<a href="#" class="on-default edit-row"><i class="fas fa-pencil-alt"></i></a>',
+                '<a href="#" class="on-default edit-row" onclick=""><i class="fas fa-pencil-alt"></i></a>',
                 '<a href="#" class="on-default remove-row"><i class="far fa-trash-alt"></i></a>',
             ].join(" ");
 
@@ -193,14 +193,17 @@ Theme Version: 	4.0.0
                 if ($this.hasClass("actions")) {
                     _self.rowSetActionsEditing($row);
                 } else {
-                   
-                    if(i!=2 || i!=6)
-                    {
-                        $this.html( '<input type="text" id="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"/>' );
-                    }else if(i==2){
-                        $this.html( '<select type="text" id="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"><option> </option><option value="1">Saleable</option><option value="2">Purchasable</option></select>' );
+                   console.log(i);
+
+                    if(i==2){
+                        $this.html( '<select type="text" id="'+id[i]+'" name="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"><option value="1">Saleable</option><option value="2">Purchasable</option></select>' );
                     }else if(i==6){
-                        $this.html( '<select type="text" id="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"><option></option><option>Active</option><option>Inactive</option> </select>' );
+                        $this.html( '<select type="text" id="'+id[i]+'" name="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"><option value="active">Active</option><option value="inactive">Inactive</option> </select>' );
+                    }else if(i==0){
+                        $this.html( '<input type="text" disabled id="'+id[i]+'" name="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"/>' );
+                    }else{
+                        $this.html( '<input type="text" id="'+id[i]+'" name="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"/>' );
+
                     }
 
                 }
@@ -264,7 +267,7 @@ Theme Version: 	4.0.0
 
 
 //***********************/ Ajax Custom Code /***********************//
-
+showItem();
 // Insert 
 $.ajaxSetup({
     headers: {
@@ -273,16 +276,12 @@ $.ajaxSetup({
 });
 function insertItem(){
     
-    //  let iName = document.getElementById("iName").value;
-     let iName1 = document.getElementById("iName1").value;
+     let iName = document.getElementById("iName").value;
      var itemGroup = document.getElementById("itemGroup").value;
      var unit = document.getElementById("unit").value;
      var sPrice = document.getElementById("sPrice").value;
      var cPrice = document.getElementById("cPrice").value;
      var status = document.getElementById("status").value;  
-
-    console.log(sPrice);
-    console.log(cPrice);
 
     $.ajax({
         url: "/add/item",
@@ -295,7 +294,7 @@ function insertItem(){
             iName:iName, itemGroup:itemGroup, unit:unit, sPrice:sPrice, cPrice:cPrice, status:status
         },
         success: function () {
-            alert("ok");
+            showItem();
         }
     });
 }
@@ -312,7 +311,67 @@ function itemDelete(id){
             },
             data: {id:id},
             success: function () {
-                alert("Deleted");
+                showItem();
             }
         });
+}
+// Update Item
+function updateItem(id){
+
+    var id = id;
+    var iName = document.getElementById("iName").value;
+    var itemGroup = document.getElementById("itemGroup").value;
+    var unit = document.getElementById("unit").value;
+    var sPrice = document.getElementById("sPrice").value;
+    var cPrice = document.getElementById("cPrice").value;
+    var status = document.getElementById("status").value;  
+    console.log(iName);
+    $.ajax({
+        url: "/update/item",
+        method: "post",
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            updateId:id,iName:iName, itemGroup:itemGroup, unit:unit, sPrice:sPrice, cPrice:cPrice, status:status
+        },
+        success: function (res) {
+            alert(res['message']);
+        }
+    });
+}
+
+// Show Item
+function showItem(){
+    console.log('ok');
+    $.ajax({
+        url: "/show/item",
+        method: "get",
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (res) {
+            var data = '';
+            $.each(res, function (key, value) {
+                data = data + "<tr data-item-id='"+ value.id +"'>"
+                data = data + "<td scope='row'>" + ++key + "</td>"
+                data = data + "<td>" + value.item_name + "</td>"
+                data = data + "<td>" + value.group_id + "</td>"
+                data = data + "<td>" + value.unit_name + "</td>"
+                data = data + "<td>" + value.sale_price + "</td>"
+                data = data + "<td>" + value.purchase_price + "</td>"
+                data = data + "<td>" + value.status + "</td>"
+                data = data + "<td class='actions'>"
+                data = data + "<a class='hidden on-editing save-row' onclick='updateItem(" + value.id + ")'><i class='fas fa-save'></i> </a>"
+                data = data + "<a class='hidden on-editing cancel-row'><i class='fas fa-times'></i> </a>"
+                data = data + "<a class='on-default edit-row'><i class='fas fa-pencil-alt'></i> </a>"
+                data = data + "<a class='on-default' onclick='itemDelete(" + value.id + ")'><i class='far fa-trash-alt'></i> </a>"
+                data = data + "</td>"
+                data = data + "</tr>"
+            })
+            $('#tabledody').html(data);
+            }
+    });
 }
