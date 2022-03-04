@@ -190,7 +190,7 @@ Theme Version: 	4.0.0
                 '<input class="form-control input-block" type="text" id="id" disabled name="id" />',
                 '<input class="form-control input-block" type="text" id="iName" name="iName" />',
                 '<select class="form-control input-block" type="text" id="itemGroup" name="itemGroup"><option> </option><option value="1">Saleable</option><option value="2">Purchasable</option></select>',
-                '<input class="form-control input-block" type="text" id="unit" name="unit" />',
+block" type="text" id="unit" name="unit" />',
                 '<input class="form-control input-block" type="text" id="sPrice" name="sPrice" />',
                 '<input class="form-control input-block" type="text" id="cPrice" name="cPrice" />',
                 '<select class="form-control input-block" type="text"  id="status" name="status"><option></option><option>Active</option><option>Inactive</option></select>',
@@ -270,13 +270,14 @@ $.ajaxSetup({
 });
 function insertItem(){
     
-     let iName = document.getElementById("iName").value;
+    //  let iName = document.getElementById("iName").value;
+     let iName1 = document.getElementById("iName1").value;
      var itemGroup = document.getElementById("itemGroup").value;
      var unit = document.getElementById("unit").value;
      var sPrice = document.getElementById("sPrice").value;
      var cPrice = document.getElementById("cPrice").value;
-     var status = document.getElementById("status").value;
-    
+     var status = document.getElementById("status").value;  
+
     console.log(sPrice);
     console.log(cPrice);
 
