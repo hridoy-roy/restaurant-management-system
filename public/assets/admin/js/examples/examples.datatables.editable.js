@@ -59,11 +59,11 @@ Theme Version: 	4.0.0
             var _self = this;
 
             this.$table
-                .on("click", "a.save-row", function (e) {
-                    e.preventDefault();
+                // .on("click", "a.save-row", function (e) {
+                //     e.preventDefault();
 
-                    _self.rowSave($(this).closest("tr"));
-                })
+                //     _self.rowSave($(this).closest("tr"));
+                // })
                 .on("click", "a.cancel-row", function (e) {
                     e.preventDefault();
 
@@ -185,23 +185,24 @@ Theme Version: 	4.0.0
         rowEdit: function ($row) {
             var _self = this,
             data = this.datatable.row($row.get(0)).data();
-
-            var inputs = [
-                '<input class="form-control input-block" type="text" id="id" disabled name="id" />',
-                '<input class="form-control input-block" type="text" id="iName" name="iName" />',
-                '<select class="form-control input-block" type="text" id="itemGroup" name="itemGroup"><option> </option><option value="1">Saleable</option><option value="2">Purchasable</option></select>',
-                '<input class="form-control input-block" type="text" id="unit" name="unit" />',
-                '<input class="form-control input-block" type="text" id="sPrice" name="sPrice" />',
-                '<input class="form-control input-block" type="text" id="cPrice" name="cPrice" />',
-                '<select class="form-control input-block" type="text"  id="status" name="status"><option></option><option>Active</option><option>Inactive</option></select>',
-            ];
+            var id = ['','iName','itemGroup','unit','sPrice','cPrice','status']
+        
             $row.children("td").each(function (i) {
                 var $this = $(this);
 
                 if ($this.hasClass("actions")) {
                     _self.rowSetActionsEditing($row);
                 } else {
-                    $this.html(inputs[i]);
+                   
+                    if(i!=2 || i!=6)
+                    {
+                        $this.html( '<input type="text" id="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"/>' );
+                    }else if(i==2){
+                        $this.html( '<select type="text" id="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"><option> </option><option value="1">Saleable</option><option value="2">Purchasable</option></select>' );
+                    }else if(i==6){
+                        $this.html( '<select type="text" id="'+id[i]+'" class="form-control input-block" value="' + data[i] + '"><option></option><option>Active</option><option>Inactive</option> </select>' );
+                    }
+
                 }
             });
         },

@@ -62,7 +62,7 @@
 									<tbody>
 										@foreach ($items as $data)
 																					
-										<tr data-item-id="1">
+										<tr data-item-id="{{ $data->id }}" role="row">
 											<td>{{ $data->id }}</td>
 											<td>{{ $data->item_name }}</td>
 											<td>{{ $data->group_id }}</td>
