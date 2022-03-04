@@ -62,7 +62,7 @@
 									<tbody>
 										@foreach ($items as $data)
 																					
-										<tr data-item-id="1">
+										<tr data-item-id="{{ $data->id }}" role="row">
 											<td>{{ $data->id }}</td>
 											<td>{{ $data->item_name }}</td>
 											<td>{{ $data->group_id }}</td>
@@ -73,7 +73,7 @@
 											
                                             
 											<td class="actions">
-												<a href="#" class="hidden on-editing save-row"><i class="fas fa-save"></i></a>
+												<a href="#" class="hidden on-editing save-row" ><i class="fas fa-save"></i></a>
 												<a href="#" class="hidden on-editing cancel-row"><i class="fas fa-times"></i></a>
 												<a href="#" class="on-default edit-row"><i class="fas fa-pencil-alt"></i></a>
 												<a href="#" class="on-default" onclick="itemDelete({{ $data->id }})"><i class="far fa-trash-alt"></i></a>
